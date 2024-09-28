@@ -20,6 +20,13 @@ const bot = new Bot<BotContext>(BOT_TOKEN);
 //app.use(express.json());
 bot.use(default_sessions);
 bot.use(auth)
+bot.use((ctx, next) => {
+  if (ctx.message && ctx.message.sticker) {
+      // If it's a sticker, do not proceed to the next middleware
+      return;
+  }
+  return next();
+});
 
 const startKeyboard = new Keyboard()
     .requestContact("Telefon raqamni yuborish")
